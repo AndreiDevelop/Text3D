@@ -11,8 +11,9 @@ public class Text3DCarriage : MonoBehaviour
 		Depth
 	}
 
-    private const float SPACE_OFFSET = 0.15f;
-    private const float STANDART_OFFSET = 5f;
+    private const float SPACE_OFFSET = 0.0025f;
+
+    [SerializeField]private float _offsetBetweenSymbols = 0.05f;
 
 
 	private Vector3 _currentPosition;
@@ -37,7 +38,7 @@ public class Text3DCarriage : MonoBehaviour
 
     private void Awake()
     {
-        _etalonPosition = transform.position;
+        _etalonPosition = transform.localPosition;
         ResetPosition();
     }
 
@@ -45,7 +46,7 @@ public class Text3DCarriage : MonoBehaviour
         void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawSphere(transform.position, 5);
+            Gizmos.DrawSphere(transform.position, 0.25f);
         }
     #endif
 
@@ -64,6 +65,7 @@ public class Text3DCarriage : MonoBehaviour
 	public void SetNewPosition(float objectSize, OffsetType type)
 	{
 		float offset = CalculateOffsetDependOfObjectSize (objectSize);
+        Debug.Log(offset);
         Offset(offset, type);
 	}
 
@@ -85,18 +87,18 @@ public class Text3DCarriage : MonoBehaviour
 		Vector3 offsetMask = Vector3.zero;
 
 		if (type == OffsetType.Width)
-			offsetMask = new Vector3 (offset, 0f, 0f);
+			offsetMask = new Vector3 (offset, _etalonPosition.y, _etalonPosition.z);
 		else if(type == OffsetType.Height)
-			offsetMask = new Vector3 (0f, offset,  0f);
+			offsetMask = new Vector3 (_etalonPosition.x, offset, _etalonPosition.z);
 		else if(type == OffsetType.Depth)
-			offsetMask = new Vector3 (0f, 0f, offset);
+			offsetMask = new Vector3 (_etalonPosition.x, _etalonPosition.y, offset);
 
 		return offsetMask;
 	}
 
 	private float CalculateOffsetDependOfObjectSize(float objectSize)
 	{
-		//return (objectSize / 2f) + STANDART_OFFSET;
-		return objectSize + STANDART_OFFSET;
+        //return (objectSize / 2f) + STANDART_OFFSET;
+        return objectSize + _offsetBetweenSymbols;
 	}
 }

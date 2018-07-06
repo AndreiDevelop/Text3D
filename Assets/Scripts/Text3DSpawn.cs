@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Text3DSpawn : MonoBehaviour 
 {
-	public GameObject SpawnObject(GameObject objectToSpawn, Vector3 position)
+    public GameObject SpawnObject(GameObject objectToSpawn, Vector3 position)
 	{
         //GameObject bufGameObject = PoolManager.Instance.ReuseObject(objectToSpawn, position, Quaternion.identity).gameObject;
 
@@ -12,4 +12,13 @@ public class Text3DSpawn : MonoBehaviour
 
         return bufGameObject;
 	}
+
+    public GameObject SpawnObject(GameObject objectToSpawn, Transform parentTransform)
+    {
+        //GameObject bufGameObject = PoolManager.Instance.ReuseObject(objectToSpawn, position, Quaternion.identity).gameObject;
+
+        GameObject bufGameObject = Instantiate(objectToSpawn, parentTransform).gameObject;
+
+        return bufGameObject;
+    }
 }
